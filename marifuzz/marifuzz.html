@@ -1,0 +1,264 @@
+<!DOCTYPE HTML>
+<html lang="en-US" class="fade">
+<head>
+  <title>marifuzz</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1274, user-scalable=no">
+  <link rel="stylesheet" href="themes/mozilla/styles/style.css">
+  <style type="text/css">
+
+  </style>
+</head>
+<body class="list">
+
+  <header class="caption">
+    <h1>marifuzz</h1>
+    <p class="footer">Gary Kwong, <a href="mailto:gkw@mozilla.com">gkw@mozilla.com</a></p>
+  </header>
+
+  <div id="cover" class="slide"><div>
+    <section>
+      <header>
+        <h2>marifuzz</h2>
+      </header>
+      <footer class="byline">
+        Gary Kwong, Mozilla, Fuzzing Work Week, Mountain View, Aug 2014
+      </footer>
+    <footer class="notes">
+    </footer>
+    </section>
+  </div></div>
+
+  <div id="agenda" class="slide"><div>
+    <section>
+      <header>
+        <h2>Agenda</h2>
+      </header>
+      <ul>
+        <li>Overview</li>
+        <li>Internals</li>
+        <li>Developer attention</li>
+        <li>Bug examples</li>
+        <li>Difficulties</li>
+        <li>Status</li>
+        <li>Demo</li>
+        <li>Questions and answers</li>
+      </ul>
+      <footer class="notes">
+      </footer>
+    </section>
+  </div></div>
+
+
+  <div id="overview" class="slide"><div>
+    <section>
+      <header>
+        <h2>Overview</h2>
+      </header>
+      <blockquote>
+        To construct a fuzzer that makes use of the GUI to find issues on Firefox OS phones,
+        specifically the Flame reference device, via the <strong>Marionette framework</strong>.
+      </blockquote>
+      <footer class="notes">
+      </footer>
+    </section>
+  </div></div>
+
+  <div id="firefox-os" class="slide"><div>
+    <section>
+      <header>
+        <h2>Firefox OS</h2>
+      </header>
+      <ul>OS comprises of:
+        <li>3rd party apps (HTML/CSS/JS)</li>
+        <li>Gaia &lt;-- marifuzz tests via this layer</li>
+        <li>Gecko</li>
+        <li>Gonk</li>
+      </ul>
+      "Lots of moving parts"
+      <footer class="notes">
+      </footer>
+    </section>
+  </div></div>
+
+  <div id="history" class="slide"><div>
+    <section>
+      <header>
+        <h2>History</h2>
+      </header>
+      <ul>Frameworks
+        <li><a href="https://bugzilla.mozilla.org/show_bug.cgi?id=468331">mmfuzz</a> (Mozmill) - Mozmill superseded</li>
+        <li><a href="https://bugzilla.mozilla.org/show_bug.cgi?id=725088">robofuzz</a> (Robotium/Java) - never got out of experimental stage</li>
+        <li><a href="https://bugzilla.mozilla.org/show_bug.cgi?id=857276">orangfuzz</a> (Orangutan) - unreliable testcases</li>
+      </ul>
+      <strong>Caveat:</strong> Fuzzer dies when framework is no longer maintained
+      <footer class="notes">
+      </footer>
+    </section>
+  </div></div>
+
+  <div id="internals" class="slide"><div>
+    <section>
+      <header>
+        <h2>Marifuzz internals</h2>
+      </header>
+      <ul>Simulates random user actions
+        <li>Opens applications (only thing implemented so far)</li>
+        <li>Taps on an ID</li>
+        <li>Taps on an screen position</li>
+        <li>Drags</li>
+        <li>Pinches</li>
+      </ul>
+      Can support specially-crafted inputs to find policy violations
+      <p/>
+      Finds problems that a user <strong>will most likely</strong> hit
+      <footer class="notes">
+      </footer>
+    </section>
+  </div></div>
+
+  <div id="support" class="slide"><div>
+    <section>
+      <header>
+        <h2>Support</h2>
+      </header>
+      <ul>Marifuzz works in:
+        <li>Firefox OS 1.2 and later</li>
+        <li>B2G Desktop</li>
+        <li>Emulator</li>
+        <li>Phones (e.g. Flame reference device)</li>
+      </ul>
+      <footer class="notes">
+      </footer>
+    </section>
+  </div></div>
+
+  <div id="developer-attention" class="slide"><div>
+    <section>
+      <header>
+        <h2>Developer attention</h2>
+      </header>
+      <ul>We want bugs that:
+        <li>Developers care about</li>
+        <li>Can be easily reproduced on reference hardware</li>
+        <li>Are low hanging fruit</li>
+      </ul>
+      <ul>Official reference hardware builds are needed:
+        <li>Debug</li>
+        <li>ASan</li>
+        <li>Valgrind</li>
+      </ul>
+      <footer class="notes">
+      </footer>
+    </section>
+  </div></div>
+
+  <div id="bug-examples" class="slide"><div>
+    <section>
+      <header>
+        <h2>Examples of bugs found</h2>
+      </header>
+      <ul>JavaScript errors [Gaia "crashes"] (20 found, 17 valid, 7 fixed)
+        <li><a href="https://bugzilla.mozilla.org/show_bug.cgi?id=959996">Bug 959996</a> - "TypeError: thumbnailList is undefined"</li>
+        <li><a href="https://bugzilla.mozilla.org/show_bug.cgi?id=1045919">Bug 1045919</a> - "TypeError: AppWindowManager.getActiveApp(...) is null"</li>
+      </ul>
+      <ul>JavaScript warnings (14 found, 9 valid, 4 fixed)
+        <li><a href="https://bugzilla.mozilla.org/show_bug.cgi?id=959945">Bug 959945</a> - "Unknown property 'box-sizing'. Declaration dropped." - <strong>Gecko bug!</strong></li>
+        <li><a href="https://bugzilla.mozilla.org/show_bug.cgi?id=960103">Bug 960103</a> - "Error in parsing value for 'background'. Declaration dropped."</li>
+      </ul>
+      <footer class="notes">
+      </footer>
+    </section>
+  </div></div>
+
+  <div id="difficulties" class="slide"><div>
+    <section>
+      <header>
+        <h2>Difficulties</h2>
+      </header>
+      <ul>Tough because Firefox OS is/has:
+        <li>Relatively young</li>
+        <li>Parts that are complex</li>
+        <li>Focus on features</li>
+        <li>Some amount of churn, esp. in the early stages</li>
+      </ul>
+      <footer class="notes">
+      </footer>
+    </section>
+  </div></div>
+
+  <div id="status" class="slide"><div>
+    <section>
+      <header>
+        <h2>Status</h2>
+      </header>
+      <ul>Current motives:
+        <li>Integration with current test harnesses</li>
+        <p/>
+        <a href="https://github.com/zacc/gaia/compare/marifuzz2">Zac Campbell has explored integration</a>
+        <li>Avoid reinventing the wheel</li>
+      </ul>
+      <p/>
+      People want more stability first before considering fuzzing
+      <footer class="notes">
+      </footer>
+    </section>
+  </div></div>
+
+  <div id="demo" class="slide"><div>
+    <section>
+      <header>
+        <h1>Demo</h1>
+      </header>
+      <ul>Steps:
+        <li>Activate virtualenv</li>
+        <li>Forward adb port</li>
+        <li>Run fuzzer</li>
+      </ul>
+      <p/>
+      Observe `adb logcat` for output, similar to stdout/stderr
+      <footer class="notes">
+      </footer>
+    </section>
+  </div></div>
+
+  <div id="qanda" class="slide"><div>
+    <section>
+      <header>
+        <h2>Questions & Answers</h2>
+      </header>
+      <footer class="notes">
+      </footer>
+    </section>
+  </div></div>
+
+  <div id="thanks" class="slide"><div>
+    <section>
+      <header>
+        <h2>Thanks</h2>
+      </header>
+        <figure class="frame middle swing">
+        <img src="pictures/mozillaoverview/redpanda.jpg"
+             alt="Red panda (Firefox)">
+        </figure>
+      <ul class="oneline demourl">
+        <li>Gary Kwong</li>
+        <li><a href="mailto:gkw@mozilla.com">gkw@mozilla.com</a></li>
+      <br/>Thanks also to Zac Campbell and other folks whom I missed
+      </ul>
+      <small class="credits">
+        <a href="http://www.flickr.com/photos/yortw/5798336827/">
+          Photo by Yortw
+        </a>
+      </small>
+    <footer class="notes">
+      Thanks for listening!
+    </footer>
+    </section>
+  </div></div>
+
+  <div class="progress"><div></div></div>
+  <script src="scripts/script.js"></script>
+  <!-- Copyright © 2010–2012 Vadim Makeev — pepelsbey.net -->
+</body>
+</html>
